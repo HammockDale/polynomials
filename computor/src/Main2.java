@@ -6,15 +6,40 @@ public class Main2 {
 
     static double x1, x2, a, b, c, d, degree;
 
+    static Double[] rezult = new Double[1000];
+
+    static void parsMas(String str) {
+        int ind = 0;
+        String[] mas_dig = str.split("\\*");
+        if (mas_dig.length == 1) {
+            ind = 0;
+        } else if (mas_dig.length == 2) {
+            String[] mas_x = mas_dig[1].split("\\^");
+            if (mas_x[0].equals("X")) {
+                if (mas_x.length == 1) {
+                    ind = 1;
+                } else if (mas_x.length == 2) {
+                    ind = Integer.parseInt(mas_x[1]);
+                } else {
+                    new WrongArgumentException();
+                }
+            }
+            else {
+                new WrongArgumentException();
+            }
+        } else {
+            new WrongArgumentException();
+        }
+        double num = Double.parseDouble(mas_dig[0]);
+        rezult[ind] = num;
+    }
     public static void main(String[] args) throws WrongArgumentException {
         if (args.length != 1) {
             throw new WrongArgumentException();
         }
 //        "5 * X^0 + 4 * X^1 - 9.3 * X^2 = 1 * X^0"
 //        ax2 + bx + c = 0
-//        System.out.println("Hello world!");
 
-//        String text = "Егор Алла Александр";
         String until, past;
         until = args[0].replaceAll(" ", "");
         String[] mas = until.split("=");
@@ -26,6 +51,10 @@ public class Main2 {
         Matcher matcher = pattern.matcher(until);
         while (matcher.find()) {
             System.out.println(until.substring(matcher.start(), matcher.end()));
+            parsMas(until.substring(matcher.start(), matcher.end()));
+        }
+        for (double num :rezult) {
+            System.out.println(num);
         }
 //        args[0].find(reg);
 //        pars(args[0].split(reg));
